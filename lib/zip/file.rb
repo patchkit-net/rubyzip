@@ -66,14 +66,16 @@ module Zip
     # a new archive if it doesn't exist already.
     def initialize(file_name, create = false, buffer = false, options = {})
       super()
-      @name    = file_name
-      @comment = ''
-      @create  = create ? true : false # allow any truthy value to mean true
+      @name      = file_name
+      @comment   = ''
+      @create    = create ? true : false # allow any truthy value to mean true
+      @decrypter = options[:decrypter] # needs it exacly here
+
       case
       when !buffer && ::File.size?(file_name)
         @create = false
         @file_permissions = ::File.stat(file_name).mode
-        ::File.open(name, 'rb') do |f|
+        ::File.open(name, 'rb', decrypter: options[:decrypter]) do |f|
           read_from_stream(f)
         end
       when @create
@@ -94,8 +96,8 @@ module Zip
       # Same as #new. If a block is passed the ZipFile object is passed
       # to the block and is automatically closed afterwards just as with
       # ruby's builtin File.open method.
-      def open(file_name, create = false)
-        zf = ::Zip::File.new(file_name, create)
+      def open(file_name, create = false, options = {})
+        zf = ::Zip::File.new(file_name, create, false, options)
         return zf unless block_given?
         begin
           yield zf

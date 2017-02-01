@@ -11,7 +11,7 @@ module Zip
                   :gp_flags, :header_signature, :follow_symlinks,
                   :restore_times, :restore_permissions, :restore_ownership,
                   :unix_uid, :unix_gid, :unix_perms,
-                  :dirty
+                  :dirty, :decrypter
     attr_reader :ftype, :filepath # :nodoc:
 
     def set_default_vars_values
@@ -488,7 +488,7 @@ module Zip
           raise "unknown @file_type #{@ftype}"
         end
       else
-        zis = ::Zip::InputStream.new(@zipfile, local_header_offset)
+        zis = ::Zip::InputStream.new(@zipfile, local_header_offset, @decrypter)
         zis.instance_variable_set(:@internal, true)
         zis.get_next_entry
         if block_given?

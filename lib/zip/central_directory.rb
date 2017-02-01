@@ -124,7 +124,9 @@ module Zip
       end
       @entry_set = EntrySet.new
       @size.times do
-        @entry_set << Entry.read_c_dir_entry(io)
+        entry = Entry.read_c_dir_entry(io)
+        entry.decrypter = @decrypter
+        @entry_set << entry
       end
     end
 
