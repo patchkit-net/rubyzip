@@ -19,6 +19,7 @@ module Zip
       super()
       @entry_set = entries.kind_of?(EntrySet) ? entries : EntrySet.new(entries)
       @comment   = comment
+      @decrypter = nil # prevents the warning
     end
 
     def write_to_stream(io) #:nodoc:
@@ -125,7 +126,7 @@ module Zip
       @entry_set = EntrySet.new
       @size.times do
         entry = Entry.read_c_dir_entry(io)
-        entry.decrypter = @decrypter
+        entry.decrypter = @decrypter unless entry.nil?
         @entry_set << entry
       end
     end
