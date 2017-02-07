@@ -1,4 +1,4 @@
-Unreleased
+1.3.0
 =====
 * Can pass decrypter in options of Zip::File.open
 * Fix password requred message when no decrypter has been passed

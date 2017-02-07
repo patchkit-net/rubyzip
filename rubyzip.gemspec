@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'zip/version'
 
 Gem::Specification.new do |s|
-  s.name                  = 'rubyzip'
+  s.name                  = 'rubyzip-patchkit'
   s.version               = ::Zip::VERSION
   s.authors               = ['Alexander Simonov']
   s.email                 = ['alex@simonov.me']
